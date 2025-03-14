@@ -21,3 +21,5 @@ many other environments may be included to validate certain models.
 Demonstration of a typical trajectory after training:
 
 Reward and loss plots during training:
+![Reward Plot comparing action clipping to tanh](./media/tanhppo.png)
+![Reward plot showing result of input normalization](./media/inpnormppo.png)
