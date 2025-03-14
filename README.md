@@ -19,7 +19,7 @@ many other environments may be included to validate certain models.
 ## Results
 #### Humanoid
 Demonstration of a typical trajectory after training:
-
+[![Walking](https://raw.githubusercontent.com/jereminuer/robot-learning-gym/main/media/humanoidwalkthumbnail.png)](https://raw.githubusercontent.com/jereminuer/robot-learning-gym/main/media/improvedhumanoidwalk.mp4)
 Reward and loss plots during training:
 ![Reward Plot comparing action clipping to tanh](./media/tanhppo.png)
 ![Reward plot showing result of input normalization](./media/inpnormppo.png)

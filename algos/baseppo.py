@@ -65,7 +65,6 @@ class ActorCritic():
          :param state = state to be normalized
       """
       assert state.shape == self.inputs["means"].shape
-      
 
       # Calculate Mean
       self.inputs["step"] += 1
@@ -95,9 +94,8 @@ class ActorCritic():
          distrs = self.pi._get_distribution(states)
          # Sample action(s) from pi
          raw_actions = distrs.sample()
-         ##### ADDED, MIGHT NOT WORK #####
+         # squish actions to valid range
          actions = F.tanh(raw_actions)*self.action_range
-         #################################
          # Record log probs for later (training pi network)
          log_probs = self.pi._get_log_probs(distrs, raw_actions)
          # Current estimate of value function in order to train policy
@@ -209,31 +207,24 @@ class ActorCritic():
          if i > 200:
             self.critic_scheduler.step()
          
-         # Step function learning drop for actor
-         if i == 300:
-            for group in self.pi_optim.param_groups:
-               group["lr"] /= 2
-               self.ratio_clip /= 2
+         # Step function learning drop for actor -- uncertain whether to keep
+         # if i == 300:
+         #    for group in self.pi_optim.param_groups:
+         #       group["lr"] /= 2
+         #       self.ratio_clip /= 2
          
          # Cap maximum trajectory length for more diverse data in buffer
          step = 0
 
          for _ in range(self.buffer_size):
             # Normalize the observation
-            #print(f"BEFORE {state}\n")
             state = self.normalize_observation(state)
-            #print(f"AFTER {state}\n\n")
-
+            # Sample action, calculate value, log prob
             raw_action, log_prob, value, true_action = self.step(torch.as_tensor(state, dtype=torch.float32))
-            # Sample action, value, calculate log prob
-            #raw_action, log_prob, value, true_action = self.step(state)
-            #print("ACTIONS", raw_action, true_action)
             state_p, reward, done, _,  _ = env.step(true_action)
             step += 1
-            #print("REWARD", reward)
 
             scaled_reward = reward * self.reward_scalar
-
             self.buffer.add_experience(state, raw_action, log_prob, value, scaled_reward)
 
             trajectory_reward += reward
@@ -247,6 +238,20 @@ class ActorCritic():
                trajectory_rewards.append(trajectory_reward)
                trajectory_reward = 0.0
                state, _ = env.reset()
+
+            # Cap maximum trajectory length for more diverse data in buffer
+            elif step >= 500:
+               # Bootstrap the return with V(s) for normalized observation
+               state_pnorm = self.normalize_observation(state_p)
+               bootstrapped_return = self.v(state_pnorm).detach()
+               self.buffer.calculate_advantages(bootstrapped_return)
+               # Log the reward
+               trajectory_rewards.append(trajectory_reward)
+               # Reset the environment
+               step = 0
+               trajectory_reward = 0.0
+               state, _ = env.reset()
+
             else:
                state = state_p
 
