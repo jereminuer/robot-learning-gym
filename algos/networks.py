@@ -94,18 +94,3 @@ class Critic(nn.Module):
       # HOWEVER, when scaling the probabilities, we just want a tensor of [batch_size].
       # This ensures scalars are multiplied out to each example in batch.
       return values.squeeze(-1)
-
-
-################# CUSTOM TRAJECTORY DATASET #################
-class TrajectoryDataset():
-   def __init__(self, trajectories: dict):
-      self.trajectories = trajectories
-   
-   def __getitem__(self, index):
-      experience = dict()
-      for key, value in self.trajectories.items():
-         experience[key] = value[index]
-      return experience
-   
-   def __len__(self):
-      return self.trajectories["advs"].size(0)
