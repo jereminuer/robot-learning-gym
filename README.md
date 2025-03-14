@@ -21,7 +21,7 @@ many other environments may be included to validate certain models.
 Demonstration of a typical trajectory after training:
 | <div align="center"> Rollout </div> | <div align="center">  Input Normalization </div> |  <div align="center"> Action Clipping </div> |
 |--- | --- | --- |
-| [<img src="./media/fasterwalkgif.GIF" width="240px">](./media/improvedhumanoidwalk.mp4) | [<img src="./media/inpnormppo.png" width="240px">](./media/inpnormppo.png) | [<img src="./media/tanhppo.png" width="240px">](./media/tanhppo.png) |
+| [<img src="./media/fasterwalkgif.gif" width="240px">](./media/improvedhumanoidwalk.mp4) | [<img src="./media/inpnormppo.png" width="240px">](./media/inpnormppo.png) | [<img src="./media/tanhppo.png" width="240px">](./media/tanhppo.png) |
 
 <!-- </div>
 <div align="center">
