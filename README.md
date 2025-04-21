@@ -1,4 +1,5 @@
 # Robot Learning Gym
+<img src="./media/fasterwalkgif.gif" width="240px">
 This is a collection of machine learning models that I have implemented and trained on a range of robotic environments.
 My focus is on humanoid robotics, and as such many of the enviornments will involve some form of bipedal robot, though
 many other environments may be included to validate certain models.
@@ -18,7 +19,6 @@ many other environments may be included to validate certain models.
 
 ## Results
 #### Humanoid
-Demonstration of a typical trajectory after training:
 | <div align="center"> Rollout </div> | <div align="center">  Input Normalization </div> |  <div align="center"> Action Clipping </div> |
 |--- | --- | --- |
 | [<img src="./media/fasterwalkgif.gif" width="240px">](./media/improvedhumanoidwalk.mp4) | [<img src="./media/inpnormppo.png" width="240px">](./media/inpnormppo.png) | [<img src="./media/tanhppo.png" width="240px">](./media/tanhppo.png) |
